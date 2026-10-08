@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 
-export default function DownloadButton({ id, filename }: { id: string; filename: string }) {
+export default function DownloadButton({ id, fullName, filename }: { id: string; fullName: string; filename: string }) {
   const [busy, setBusy] = useState(false);
 
   async function download() {
     setBusy(true);
     try {
-      const res = await fetch(`/certificates/${encodeURIComponent(id)}/pdf`);
+      const res = await fetch(`/certificates/${encodeURIComponent(id)}/pdf?full_name=${encodeURIComponent(fullName)}`);
       if (!res.ok) throw new Error();
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);

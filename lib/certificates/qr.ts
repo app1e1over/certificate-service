@@ -1,9 +1,9 @@
 import QRCode from "qrcode";
 
-// Builds the URL the QR code / "VERIFY" box point to for a given certificate.
-export function verifyUrl(id: string): string {
+// Builds the URL the QR code points to. The holder's name travels with the ID, because the API needs both.
+export function verifyUrl(id: string, fullName: string): string {
   const base = (process.env.PUBLIC_VERIFY_URL || "").replace(/\/$/, "");
-  return `${base}/${encodeURIComponent(id)}`;
+  return `${base}/${encodeURIComponent(id)}?full_name=${encodeURIComponent(fullName)}`;
 }
 
 export function verifyLabel(id: string): string {

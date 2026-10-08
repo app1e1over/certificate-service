@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 
 // If localStorage["always-download"] === "true", silently fetch and save the PDF on page load.
-export default function AutoDownload({ id, filename }: { id: string; filename: string }) {
+export default function AutoDownload({ id, fullName, filename }: { id: string; fullName: string; filename: string }) {
   useEffect(() => {
     let shouldDownload = false;
     try {
@@ -15,7 +15,7 @@ export default function AutoDownload({ id, filename }: { id: string; filename: s
     let revoke: string | null = null;
     (async () => {
       try {
-        const res = await fetch(`/certificates/${encodeURIComponent(id)}/pdf`);
+        const res = await fetch(`/certificates/${encodeURIComponent(id)}/pdf?full_name=${encodeURIComponent(fullName)}`);
         if (!res.ok) return;
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
@@ -34,7 +34,7 @@ export default function AutoDownload({ id, filename }: { id: string; filename: s
     return () => {
       if (revoke) URL.revokeObjectURL(revoke);
     };
-  }, [id, filename]);
+  }, [id, fullName, filename]);
 
   return null;
 }
